@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bpm
+    driverClassName: org.postgresql.Driver
+    username: bpm
+    password: bpm
+    hikari:
+      maximum-pool-size: 5

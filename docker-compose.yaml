@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  app:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: bpm
+      POSTGRES_USER: bpm
+      POSTGRES_PASSWORD: bpm
