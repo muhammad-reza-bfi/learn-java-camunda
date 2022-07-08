@@ -14,11 +14,11 @@ import java.util.List;
 public class NumberController {
 
     @Autowired
-    private final NumberService numberService;
+    private NumberService numberService;
 
-    public NumberController(NumberService numberService) {
-        this.numberService = numberService;
-    }
+//    public NumberController(NumberService numberService) {
+//        this.numberService = numberService;
+//    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
