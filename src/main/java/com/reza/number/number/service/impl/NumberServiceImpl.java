@@ -10,14 +10,11 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.*;
 
 @Service
+@Transactional
 public class NumberServiceImpl implements NumberService {
 
 
@@ -37,23 +34,19 @@ public class NumberServiceImpl implements NumberService {
         if (currentNumber.isPresent()){
             throw new RuntimeException("number already exist");
         }
+
         Number newNumber = numberRepository.save(Number.builder().number(request.getNumber()).status("PENDING").build());
 
         Map<String, Object> variables = new HashMap<>();
         variables.put(WorkflowConstants.NUMBER_ID_VARIABLE_KEY,newNumber.getId());
-
         ProcessInstance newProcess = runtimeService.startProcessInstanceByKey(WorkflowConstants.PRODUCT_TO_WORKFLOW_MAP.get(1L), variables);
-
-        System.out.println(newProcess.getId());
+        System.out.printf("processing camunda with %s\n",newProcess.getId());
 
         return NumberResponse.builder()
                 .id(newNumber.getId())
-                .number(newNumber
-                        .getNumber())
-                .type(newNumber
-                        .getType())
-                .status(newNumber
-                        .getStatus())
+                .number(newNumber.getNumber())
+                .type(newNumber.getType())
+                .status(newNumber.getStatus())
                 .build();
     }
 
@@ -63,13 +56,16 @@ public class NumberServiceImpl implements NumberService {
 
         for (Number number : numberRepository.findAll()) {
             listOfNumbers.add(NumberResponse.builder()
-                    .id(number.getId()).number(number.getNumber()).status(number.getStatus()).build());
+                    .id(number.getId())
+                    .number(number.getNumber())
+                    .type(number.getType())
+                    .status(number.getStatus()).build());
         }
         return listOfNumbers;
     }
 
     @Override
-    public NumberResponse updateNumber(NumberRequest request, Long id) {
+    public NumberResponse updateNumber(NumberRequest request, UUID id) {
         Optional<Number> currentNumber = numberRepository.findById(id);
         if (currentNumber.isEmpty()){
             throw new RuntimeException("number not exist");
@@ -81,19 +77,22 @@ public class NumberServiceImpl implements NumberService {
                     .status(newNumber.getStatus())
                     .type(newNumber.getType())
                     .build());
+            Map<String, Object> variables = new HashMap<>();
+            variables.put(WorkflowConstants.NUMBER_ID_VARIABLE_KEY, newNumber.getId());
+            ProcessInstance newProcess = runtimeService.startProcessInstanceByKey(WorkflowConstants.PRODUCT_TO_WORKFLOW_MAP.get(1L), variables);
+            System.out.printf("processing camunda with %s\n",newProcess.getId());
         }
 
         return NumberResponse.builder()
                 .id(newNumber.getId())
-                .number(newNumber
-                        .getNumber())
-                .status(newNumber
-                        .getStatus())
+                .number(newNumber.getNumber())
+                .type(currentNumber.get().getType())
+                .status(newNumber.getStatus())
                 .build();
     }
 
     @Override
-    public NumberResponse deleteNumber(Long id) {
+    public NumberResponse deleteNumber(UUID id) {
         Optional<Number> currentNumber = numberRepository.findById(id);
         if (currentNumber.isEmpty()){
             throw new RuntimeException("number not exist");
@@ -102,12 +101,13 @@ public class NumberServiceImpl implements NumberService {
         return NumberResponse.builder()
                 .id(currentNumber.get().getId())
                 .number(currentNumber.get().getNumber())
+                .type(currentNumber.get().getType())
                 .status(currentNumber.get().getStatus())
                 .build();
     }
 
     @Override
-    public NumberResponse getNumber(Long id) {
+    public NumberResponse getNumber(UUID id) {
         Optional<Number> currentNumber = numberRepository.findById(id);
         if (currentNumber.isEmpty()){
             throw new RuntimeException("number not exist");
@@ -116,12 +116,13 @@ public class NumberServiceImpl implements NumberService {
         return NumberResponse.builder()
                 .id(currentNumber.get().getId())
                 .number(currentNumber.get().getNumber())
+                .type(currentNumber.get().getType())
                 .status(currentNumber.get().getStatus())
                 .build();
     }
 
     @Override
-    public NumberResponse updateTypeNumber(String typeNumber, Long id) {
+    public NumberResponse updateTypeNumber(String typeNumber, UUID id) {
         Optional<Number> currentNumber = numberRepository.findById(id);
         if (currentNumber.isEmpty()){
             throw new RuntimeException("number not exist");
@@ -141,4 +142,6 @@ public class NumberServiceImpl implements NumberService {
                         .getStatus())
                 .build();
     }
+
+
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -20,7 +21,7 @@ public class ChooseTypeActivity implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        Long numberId = (Long) delegateExecution.getVariable(WorkflowConstants.NUMBER_ID_VARIABLE_KEY);
+        UUID numberId = (UUID) delegateExecution.getVariable(WorkflowConstants.NUMBER_ID_VARIABLE_KEY);
         System.out.printf("ChooseTypeActivity PROCESS: %s\n", numberId);
 
         String result;

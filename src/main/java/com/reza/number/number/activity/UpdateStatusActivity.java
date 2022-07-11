@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -20,14 +21,13 @@ public class UpdateStatusActivity implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
-        Long numberId = (Long) delegateExecution.getVariable(WorkflowConstants.NUMBER_ID_VARIABLE_KEY);
+        UUID numberId = (UUID) delegateExecution.getVariable(WorkflowConstants.NUMBER_ID_VARIABLE_KEY);
         System.out.printf("ChooseStatusActivity PROCESS: %s\n", numberId);
 
         String result;
         Optional<Number> currentNumber = numberRepository.findById(numberId);
 
         numberRepository.save(Number.builder().id(numberId).number(currentNumber.get().getNumber()).type(currentNumber.get().getType()).status("SUCCESS").build());
-
 
         System.out.printf("ChooseStatusActivity DONE: %s\n", numberId);
     }

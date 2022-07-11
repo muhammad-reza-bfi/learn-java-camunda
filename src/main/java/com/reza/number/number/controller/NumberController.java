@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/number")
@@ -15,10 +16,6 @@ public class NumberController {
 
     @Autowired
     private NumberService numberService;
-
-//    public NumberController(NumberService numberService) {
-//        this.numberService = numberService;
-//    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,19 +31,19 @@ public class NumberController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    NumberResponse UpdateNumbers(@RequestBody NumberRequest req, @PathVariable(name="id") Long id) {
+    NumberResponse UpdateNumbers(@RequestBody NumberRequest req, @PathVariable(name="id") UUID id) {
         return numberService.updateNumber(req, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    NumberResponse DeleteNumbers(@PathVariable(name="id") Long id) {
-        return numberService.deleteNumber( id);
+    NumberResponse DeleteNumbers(@PathVariable(name="id") UUID id) {
+        return numberService.deleteNumber(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    NumberResponse GetNumber(@PathVariable(name="id") Long id) {
+    NumberResponse GetNumber(@PathVariable(name="id") UUID id) {
         // get detail
         return numberService.getNumber(id);
     }
