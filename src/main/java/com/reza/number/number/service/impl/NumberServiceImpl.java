@@ -1,15 +1,19 @@
 package com.reza.number.number.service.impl;
 
+import com.reza.number.number.constant.WorkflowConstants;
 import com.reza.number.number.dto.number.request.NumberRequest;
 import com.reza.number.number.dto.number.response.NumberResponse;
 import com.reza.number.number.entity.Number;
 import com.reza.number.number.repository.NumberRepository;
 import com.reza.number.number.service.NumberService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,10 +39,12 @@ public class NumberServiceImpl implements NumberService {
         }
         Number newNumber = numberRepository.save(Number.builder().number(request.getNumber()).status("PENDING").build());
 
-//        Map<String, Object> variables = new HashMap<>();
-//        variables.put("halloo","budi");
-//
-//        ProcessInstance newProcess =   runtimeService.startProcessInstanceByKey("hello", variables)
+        Map<String, Object> variables = new HashMap<>();
+        variables.put(WorkflowConstants.NUMBER_ID_VARIABLE_KEY,newNumber.getId());
+
+        ProcessInstance newProcess = runtimeService.startProcessInstanceByKey("NUMBER", variables);
+
+        System.out.println(newProcess.getId());
 
         return NumberResponse.builder()
                 .id(newNumber.getId())
@@ -109,6 +115,28 @@ public class NumberServiceImpl implements NumberService {
                 .id(currentNumber.get().getId())
                 .number(currentNumber.get().getNumber())
                 .status(currentNumber.get().getStatus())
+                .build();
+    }
+
+    @Override
+    public NumberResponse updateTypeNumber(String typeNumber, Long id) {
+        Optional<Number> currentNumber = numberRepository.findById(id);
+        if (currentNumber.isEmpty()){
+            throw new RuntimeException("number not exist");
+        }
+        Number newNumber = currentNumber.get();
+        newNumber = numberRepository.save(Number.builder().id(id)
+                    .number(newNumber.getNumber())
+                    .status(newNumber.getStatus())
+                    .type(typeNumber)
+                    .build());
+
+        return NumberResponse.builder()
+                .id(newNumber.getId())
+                .number(newNumber
+                        .getNumber())
+                .status(newNumber
+                        .getStatus())
                 .build();
     }
 }

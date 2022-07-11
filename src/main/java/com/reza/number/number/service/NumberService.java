@@ -15,4 +15,7 @@ public interface NumberService {
     NumberResponse deleteNumber(Long id);
 
     NumberResponse getNumber(Long id);
+
+    NumberResponse updateTypeNumber(String typeNumber, Long id);
+
 }
