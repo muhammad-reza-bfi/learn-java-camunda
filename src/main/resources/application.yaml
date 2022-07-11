@@ -6,3 +6,7 @@ spring:
     password: bpm
     hikari:
       maximum-pool-size: 5
+
+camunda.bpm.admin-user:
+  id: demo
+  password: demo

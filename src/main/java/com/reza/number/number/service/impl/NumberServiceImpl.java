@@ -5,6 +5,7 @@ import com.reza.number.number.dto.number.response.NumberResponse;
 import com.reza.number.number.entity.Number;
 import com.reza.number.number.repository.NumberRepository;
 import com.reza.number.number.service.NumberService;
+import org.camunda.bpm.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,10 @@ import java.util.Optional;
 
 @Service
 public class NumberServiceImpl implements NumberService {
+
+
+    @Autowired
+    private RuntimeService runtimeService;
 
     @Autowired
     private final NumberRepository numberRepository;
@@ -29,6 +34,11 @@ public class NumberServiceImpl implements NumberService {
             throw new RuntimeException("number already exist");
         }
         Number newNumber = numberRepository.save(Number.builder().number(request.getNumber()).status("PENDING").build());
+
+//        Map<String, Object> variables = new HashMap<>();
+//        variables.put("halloo","budi");
+//
+//        ProcessInstance newProcess =   runtimeService.startProcessInstanceByKey("hello", variables)
 
         return NumberResponse.builder()
                 .id(newNumber.getId())

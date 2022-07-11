@@ -19,6 +19,19 @@
 		<java.version>11</java.version>
 		<camunda.spring-boot.version>7.17.0</camunda.spring-boot.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.camunda.bpm</groupId>
+				<artifactId>camunda-bom</artifactId>
+				<version>7.17.0</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -28,31 +41,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<!-- BPM (Camunda) Framework -->
-		<!-- https://mvnrepository.com/artifact/org.camunda.bpm.springboot/camunda-bpm-spring-boot-starter -->
+	    <dependency>
+    		<groupId>org.camunda.bpm.springboot</groupId>
+      		<artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+    	</dependency>
 		<dependency>
-			<groupId>org.camunda.bpm.springboot</groupId>
-			<artifactId>camunda-bpm-spring-boot-starter</artifactId>
-			<version>${camunda.spring-boot.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.camunda.bpm.springboot/camunda-bpm-spring-boot-starter-webapp -->
-		<!-- Webapps under http://localhost:8080/camunda/app/ -->
-		<dependency>
-			<groupId>org.camunda.bpm.springboot</groupId>
-			<artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-			<version>${camunda.spring-boot.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.camunda.bpm.springboot/camunda-bpm-spring-boot-starter-rest -->
-		<!-- access the api at http://localhost:8080/engine-rest/ -->
-		<dependency>
-			<groupId>org.camunda.bpm.springboot</groupId>
-			<artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-			<version>${camunda.spring-boot.version}</version>
-		</dependency>
-
-		<!-- Database and Migrations Framework -->
-		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+      		<groupId>com.h2database</groupId>
+      		<artifactId>h2</artifactId>
+    	</dependency>
+	    <dependency>
+    		<groupId>org.camunda.bpm.springboot</groupId>
+      		<artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+    	</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
