@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/bpm
+    url: jdbc:postgresql://localhost:5432/number
     driverClassName: org.postgresql.Driver
-    username: bpm
-    password: bpm
+    username: number
+    password: number
     hikari:
       maximum-pool-size: 5
 

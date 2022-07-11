@@ -42,7 +42,7 @@ public class NumberServiceImpl implements NumberService {
         Map<String, Object> variables = new HashMap<>();
         variables.put(WorkflowConstants.NUMBER_ID_VARIABLE_KEY,newNumber.getId());
 
-        ProcessInstance newProcess = runtimeService.startProcessInstanceByKey(WorkflowConstants.PRODUCT_TO_WORKFLOW_MAP.get(1), variables);
+        ProcessInstance newProcess = runtimeService.startProcessInstanceByKey(WorkflowConstants.PRODUCT_TO_WORKFLOW_MAP.get(1L), variables);
 
         System.out.println(newProcess.getId());
 

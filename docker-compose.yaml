@@ -5,6 +5,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: bpm
-      POSTGRES_USER: bpm
-      POSTGRES_PASSWORD: bpm
+      POSTGRES_DB: number
+      POSTGRES_USER: number
+      POSTGRES_PASSWORD: number
