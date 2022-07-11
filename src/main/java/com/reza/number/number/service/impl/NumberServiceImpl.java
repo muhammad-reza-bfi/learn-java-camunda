@@ -50,6 +50,8 @@ public class NumberServiceImpl implements NumberService {
                 .id(newNumber.getId())
                 .number(newNumber
                         .getNumber())
+                .type(newNumber
+                        .getType())
                 .status(newNumber
                         .getStatus())
                 .build();
