@@ -1,12 +1,15 @@
 package com.reza.number.number.activity;
 
+import com.reza.number.number.constant.AppConstants;
 import com.reza.number.number.constant.WorkflowConstants;
 import com.reza.number.number.entity.Number;
+import com.reza.number.number.exception.BusinessErrorException;
 import com.reza.number.number.repository.NumberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -25,13 +28,9 @@ public class ChooseTypeActivity implements JavaDelegate {
         System.out.printf("ChooseTypeActivity PROCESS: %s\n", numberId);
 
         String result;
-        Optional<Number> currentNumber = numberRepository.findById(numberId);
+        Number currentNumber = numberRepository.findById(numberId).orElseThrow(() -> new BusinessErrorException(AppConstants.NUMBER_NOT_FOUND_MESSAGE));
 
-        if (currentNumber.isEmpty()){
-            throw new RuntimeException("number not exist");
-        }
-
-        if  (currentNumber.get().getNumber() % 2 == 0) {
+        if  (currentNumber.getNumber() % 2 == 0) {
             result = "EVEN";
         } else {
             result = "ODD";
